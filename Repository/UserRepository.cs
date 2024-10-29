@@ -42,7 +42,7 @@ namespace WritersClub.Repository
         }
 
 
-        public async Task<User> GetUserByLogin(string login)
+        public async Task<User> GetUserByLogin(string login, int id = 0)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Login == login);
         }

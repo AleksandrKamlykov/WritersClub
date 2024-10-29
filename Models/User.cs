@@ -28,7 +28,7 @@ public class User
     [Required(ErrorMessage = "Логин обязателен")]
     [StringLength(30, ErrorMessage = "Логин должен быть не длиннее 30 символов")]
     [RegularExpression(@"^\w+$", ErrorMessage = "Логин может содержать только буквы, цифры и подчеркивания")]
-    [Remote(action: "IsUserNameAvailable", controller: "Account", ErrorMessage = "Имя пользователя уже занято.")]
+    [Remote(action: "IsUserNameAvailable", controller: "Account", AdditionalFields = "Id", ErrorMessage = "Этот логин уже занят другим пользователем.")]
     public string Login { get; set; }
 
     public UserState State { get; set; }
