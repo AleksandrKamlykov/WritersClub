@@ -9,4 +9,6 @@ public interface IUser
     public Task<User> GetUserByLogin(string login);
     public Task<User> UpdateUser(User user);
     public Task<User> DeleteUser(int id);
+    Task<IEnumerable<User>> GetAllUsers();
+    Task<bool> IsUserNameAvailable(string login);
 }

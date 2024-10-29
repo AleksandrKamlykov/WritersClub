@@ -41,6 +41,7 @@ namespace WritersClub.Repository
             return !await _context.Users.AnyAsync(e => e.Login == login);
         }
 
+
         public async Task<User> GetUserByLogin(string login)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Login == login);
@@ -60,6 +61,10 @@ namespace WritersClub.Repository
                 await _context.SaveChangesAsync();
             }
             return user;
+        }
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            return await _context.Users.ToListAsync();
         }
     }
 }
