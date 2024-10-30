@@ -9,6 +9,6 @@ public interface IUser
     public Task<User> GetUserByLogin(string login,int id = 0);
     public Task<User> UpdateUser(User user);
     public Task<User> DeleteUser(int id);
-    Task<IEnumerable<User>> GetAllUsers();
+    public Task<IEnumerable<User>> GetAllUsers();
     Task<bool> IsUserNameAvailable(string login);
 }

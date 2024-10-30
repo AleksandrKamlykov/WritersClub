@@ -9,12 +9,10 @@ namespace WritersClub.Controllers
     public class AccountController : Controller
     {
         private readonly IUser _users;
-        private readonly IAntiforgery _antiforgery;
 
-        public AccountController(IUser users, IAntiforgery antiforgery)
+        public AccountController(IUser users)
         {
             _users = users;
-            _antiforgery = antiforgery;
         }
         public async Task<IActionResult> Index()
         {
@@ -67,13 +65,34 @@ namespace WritersClub.Controllers
             return View(user); 
         }
         [HttpPost]
-        public async Task<IActionResult>UpdateUser(User user)
+        public async Task<IActionResult> UpdateUser(User user)
         {
             if (ModelState.IsValid)
             {
-                await _users.UpdateUser(user);
+                var existingUser = await _users.GetUserById(user.Id);
+                if (existingUser == null)
+                {
+                    return NotFound();
+                }
+
+                var userWithSameLogin = await _users.GetUserByLogin(user.Login);
+                if (userWithSameLogin != null && userWithSameLogin.Id != user.Id)
+                {
+                    ModelState.AddModelError("Login", "Этот логин уже занят другим пользователем.");
+                    return View(user); 
+                }
+                existingUser.Name = user.Name;
+                existingUser.Email = user.Email;
+                existingUser.Login = user.Login;
+                existingUser.Password = user.Password;
+
+                await _users.UpdateUser(existingUser);
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+
+            return View(user); 
         }
+
+
     }
 }

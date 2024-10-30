@@ -1,6 +1,6 @@
-﻿namespace WritersClub.Repositories
+﻿namespace WritersClub.Repository
 {
-    public class BookRepository
+    public class BookRepository/*:IBook*/
     {
     }
 }

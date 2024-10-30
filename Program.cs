@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WritersClub.Data;
+using WritersClub.Interfaces;
 using WritersClub.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<ApplicationContext>(opts => {
     builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
 builder.Services.AddScoped<IUser, UserRepository>();
+//builder.Services.AddScoped<IBook, BookRepository>();
+builder.Services.AddScoped<IGenre, GenreRepository>();
 var app = builder.Build();
 
 

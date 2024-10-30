@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Genre>
+@{
+    ViewData["Title"] = "Genre Page";
+}
+
+<h2 class="p-2 bg-primary text-white text-center rounded">Список доступных жанров произведений </h2>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Жанр</th>
+            <th>Краткое описание</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var genre in Model)
+        {
+           
+                <tr>
+                    <td>@genre.Id</td>
+                    <td>@genre.Name</td>
+                    <td>@genre.Description</td>
+                    <td>
+                        <a asp-action="Create" asp-route-id="@genre.Id" class="btn btn-outline-primary btn-sm">Изменить</a>
+                        <form asp-action="Delete" method="post" class="d-inline">
+                            <input type="hidden" name="Id" value="@genre.Id" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" asp-route-id="0" class="btn btn-success">Добавить новый жанр</a>
+<a asp-action="Index" asp-controller="Home" class="btn btn-success">На главную</a>
