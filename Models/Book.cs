@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace WritersClub.Models;
@@ -14,19 +15,17 @@ public class Book
     public int UserId { get; set; }
 
     public List<Page> Pages { get; set; } = new();
-
-    [Required(ErrorMessage = "Автор книги обязателен")]
+    [ValidateNever]
     public User User { get; set; }
 
     [Required(ErrorMessage = "Не передан идентификатор жанра")]
     public int GenreId { get; set; }
-
-    [Required(ErrorMessage = "Жанр книги обязателен")]
+    [ValidateNever]
     public Genre Genre { get; set; }
 
     [DataType(DataType.Date)]
     [Required(ErrorMessage = "Дата публикации обязательна")]
-    public DateOnly ReleaseDate { get; set; }
+    public DateTime ReleaseDate { get; set; }
 
     public List<Rating> Ratings { get; set; } = new();
 }

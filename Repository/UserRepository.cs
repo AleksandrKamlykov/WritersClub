@@ -66,5 +66,11 @@ namespace WritersClub.Repository
         {
             return await _context.Users.ToListAsync();
         }
+        public async Task<IEnumerable<User>> SearchUsersByName(string searchQuery)
+        {
+            return await _context.Users
+                .Where(u => EF.Functions.Like(u.Name, $"%{searchQuery}%"))
+                .ToListAsync();
+        }
     }
 }

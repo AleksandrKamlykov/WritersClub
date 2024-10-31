@@ -92,7 +92,20 @@ namespace WritersClub.Controllers
 
             return View(user); 
         }
+        [HttpGet]
+        public async Task<IActionResult> SelectUser(string searchQuery = "")
+        {
+            var users = string.IsNullOrWhiteSpace(searchQuery)
+                ? await _users.GetAllUsers() 
+                : await _users.SearchUsersByName(searchQuery);
 
+            return View(users);
+        }
+        [HttpPost]
+        public IActionResult SelectUser(int userId)
+        {
+            return RedirectToAction("CreateBook", "Book", new { userId = userId });
+        }
 
     }
 }

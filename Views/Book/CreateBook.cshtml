@@ -1,0 +1,9 @@
+﻿@model Book
+
+@{
+    ViewData["Title"] = "Добавить книгу";
+}
+
+<h2>Добавить книгу</h2>
+
+@await Html.PartialAsync("_BookForm", Model)

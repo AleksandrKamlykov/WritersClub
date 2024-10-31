@@ -1,0 +1,26 @@
+﻿@model IEnumerable<User>
+<h2>Выберите автора</h2>
+<form asp-action="SelectUser" method="get">
+    <input type="text" name="searchQuery" placeholder="Введите имя пользователя" class="form-control mb-2" />
+    <button type="submit" class="btn btn-primary">Поиск</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>
+                    <a asp-action="CreateBook" asp-controller="Book" asp-route-userId="@user.Id" class="btn btn-link">Выбрать</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,41 @@
+﻿@model Book
+
+<form asp-action="CreateBook" asp-controller="Book" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col">
+            <label>Название</label>
+            <input name="Name" class="form-control" placeholder="Название" required />
+        </div>
+        <div class="col">
+            <label>Автор</label>
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+            <input type="text" class="form-control" value="@Model.User?.Name" readonly />
+          @*   <a asp-action="SelectUser" asp-controller="Account" class="btn btn-secondary mt-2">Выбрать автора</a> *@
+        </div>
+        <div class="col">
+            <label>Жанр</label>
+            <select name="GenreId" class="form-control" required>
+                <option value="" disabled selected>Выберите жанр</option>
+                @foreach (var genre in ViewBag.Genres)
+                {
+                    <option value="@genre.Id">@genre.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label>Дата публикации</label>
+            <input name="ReleaseDate" type="date" class="form-control" required value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="col">
+            <br />
+            <button type="submit" class="btn btn-primary">Опубликовать</button>
+        </div>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
