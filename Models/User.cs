@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+п»їusing Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace WritersClub.Models;
@@ -13,22 +13,22 @@ public class User
 {
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "Имя пользователя обязательно")]
-    [StringLength(50, MinimumLength = 6, ErrorMessage = "Имя должно быть не менее 3 и не длиннее 50 символов")]
+    [Required(ErrorMessage = "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ")]
+    [StringLength(maximumLength: 50, MinimumLength = 6, ErrorMessage = "РРјСЏ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РЅРµ РјРµРЅРµРµ 3 Рё РЅРµ РґР»РёРЅРЅРµРµ 50 СЃРёРјРІРѕР»РѕРІ")]
     public string Name { get; set; }
 
-    [Required(ErrorMessage = "Email обязателен")]
-    [EmailAddress(ErrorMessage = "Неверный формат Email")]
+    [Required(ErrorMessage = "Email РѕР±СЏР·Р°С‚РµР»РµРЅ")]
+    [EmailAddress(ErrorMessage = "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ Email")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Пароль обязателен")]
-    [StringLength(100, MinimumLength = 6, ErrorMessage = "Пароль должен содержать от 6 до 100 символов")]
+    [Required(ErrorMessage = "РџР°СЂРѕР»СЊ РѕР±СЏР·Р°С‚РµР»РµРЅ")]
+    [StringLength(100, MinimumLength = 6, ErrorMessage = "РџР°СЂРѕР»СЊ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ РѕС‚ 6 РґРѕ 100 СЃРёРјРІРѕР»РѕРІ")]
     public string Password { get; set; }
 
-    [Required(ErrorMessage = "Логин обязателен")]
-    [StringLength(30, ErrorMessage = "Логин должен быть не длиннее 30 символов")]
-    [RegularExpression(@"^\w+$", ErrorMessage = "Логин может содержать только буквы, цифры и подчеркивания")]
-    [Remote(action: "IsUserNameAvailable", controller: "Account", AdditionalFields = "Id", ErrorMessage = "Этот логин уже занят другим пользователем.")]
+    [Required(ErrorMessage = "Р›РѕРіРёРЅ РѕР±СЏР·Р°С‚РµР»РµРЅ")]
+    [StringLength(30, ErrorMessage = "Р›РѕРіРёРЅ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРµ РґР»РёРЅРЅРµРµ 30 СЃРёРјРІРѕР»РѕРІ")]
+    [RegularExpression(@"^\w+$", ErrorMessage = "Р›РѕРіРёРЅ РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ С‚РѕР»СЊРєРѕ Р±СѓРєРІС‹, С†РёС„СЂС‹ Рё РїРѕРґС‡РµСЂРєРёРІР°РЅРёСЏ")]
+    [Remote(action: "IsUserNameAvailable", controller: "Account", AdditionalFields = "Id", ErrorMessage = "Р­С‚РѕС‚ Р»РѕРіРёРЅ СѓР¶Рµ Р·Р°РЅСЏС‚ РґСЂСѓРіРёРј РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј.")]
     public string Login { get; set; }
 
     public UserState State { get; set; }

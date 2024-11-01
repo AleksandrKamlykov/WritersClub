@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+п»їusing Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace WritersClub.Models;
@@ -7,24 +7,25 @@ public class Book
 {
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "Название книги обязательно")]
-    [StringLength(100, ErrorMessage = "Название книги должно быть не длиннее 100 символов")]
+    [Required(ErrorMessage = "РќР°Р·РІР°РЅРёРµ РєРЅРёРіРё РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ")]
+    [StringLength(maximumLength:100, ErrorMessage = "РќР°Р·РІР°РЅРёРµ РєРЅРёРіРё РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РЅРµ РґР»РёРЅРЅРµРµ 100 СЃРёРјРІРѕР»РѕРІ")]
     public string Name { get; set; }
 
-    [Required(ErrorMessage = "Не передан идентификатор пользователя")]
+    [Required(ErrorMessage = "РќРµ РїРµСЂРµРґР°РЅ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")]
     public int UserId { get; set; }
 
-    public List<Page> Pages { get; set; } = new();
+    public List<Page> Pages { get; set; } = new List<Page>();
+    public int PageCount { get; set; }
     [ValidateNever]
     public User User { get; set; }
 
-    [Required(ErrorMessage = "Не передан идентификатор жанра")]
+    [Required(ErrorMessage = "РќРµ РїРµСЂРµРґР°РЅ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р¶Р°РЅСЂР°")]
     public int GenreId { get; set; }
     [ValidateNever]
     public Genre Genre { get; set; }
 
     [DataType(DataType.Date)]
-    [Required(ErrorMessage = "Дата публикации обязательна")]
+    [Required(ErrorMessage = "Р”Р°С‚Р° РїСѓР±Р»РёРєР°С†РёРё РѕР±СЏР·Р°С‚РµР»СЊРЅР°")]
     public DateTime ReleaseDate { get; set; }
 
     public List<Rating> Ratings { get; set; } = new();

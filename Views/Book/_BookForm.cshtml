@@ -11,7 +11,6 @@
             <label>Автор</label>
             <input type="hidden" name="UserId" value="@Model.UserId" />
             <input type="text" class="form-control" value="@Model.User?.Name" readonly />
-          @*   <a asp-action="SelectUser" asp-controller="Account" class="btn btn-secondary mt-2">Выбрать автора</a> *@
         </div>
         <div class="col">
             <label>Жанр</label>
@@ -32,10 +31,44 @@
             <button type="submit" class="btn btn-primary">Опубликовать</button>
         </div>
     </div>
+    <div class="row mt-3">
+        <div class="col">
+            <h5>Страницы</h5>
+            <div id="pages-container">
+                @for (int i = 0; i < Model.Pages.Count; i++)
+                {
+                    <div class="form-group">
+                        <label>Страница @i+1</label>
+                        <textarea name="Pages[@i].Content" class="form-control" rows="4" placeholder="Введите текст страницы"></textarea>
+                    </div>
+                }
+            </div>
+            <button type="button" class="btn btn-secondary" id="add-page-button">Добавить страницу</button>
+        </div>
+    </div>
 </form>
-@section Scripts
-{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+
+
+    <script>
+
+        let pageCount = 0;
+
+        document.getElementById('add-page-button').addEventListener('click', function () {
+            const countPages = document.getElementById('countPages');
+          
+
+            const pagesContainer = document.getElementById('pages-container');
+             console.log(`Added page ${pageCount}`);
+
+            const newPage = document.createElement('div');
+            newPage.classList.add('form-group');
+            newPage.innerHTML = `
+                        <label>Страница ${pageCount + 1}</label>
+                        <textarea name="Pages[${pageCount}].Content" class="form-control" rows="4" placeholder="Введите текст страницы"></textarea>
+                                     <input type="hidden" name="Pages[${pageCount}].PageNumber" value="${pageCount}" />
+                        `;
+            pagesContainer.appendChild(newPage);
+            pageCount++;
+        });
+    </script>
+

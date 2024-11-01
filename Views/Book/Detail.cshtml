@@ -1,0 +1,69 @@
+﻿@model WritersClub.Models.Book
+
+@{
+    ViewData["Title"] = "Book Details";
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<h1>@Model.Name</h1>
+
+<div style="display: flex;">
+    <div style="flex: 1; padding-right: 20px;">
+        <h2>Details</h2>
+        <p><strong>Author:</strong> @Model.User.Name</p>
+        <p><strong>Genre:</strong> @Model.Genre.Name</p>
+        <p><strong>Release Date:</strong> @Model.ReleaseDate.ToString("d")</p>
+    </div>
+
+    <div style="flex: 2;">
+        <h2>Page <span id="pageNumber">1</span> of @Model.PageCount</h2>
+        <div id="pageContent">
+            <p>@Model.Pages.FirstOrDefault()?.Content</p>
+        </div>
+
+        <div>
+            <button id="prevPage" class="btn btn-primary" disabled>Previous Page</button>
+            <button id="nextPage" class="btn btn-primary">Next Page</button>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        let currentPage = 1;
+        const totalPages = @Model.PageCount;
+        const bookId = @Model.Id;
+
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadPage(currentPage);
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadPage(currentPage);
+            }
+        });
+
+        function loadPage(pageNumber) {
+            fetch(`/Book/GetPage?bookId=${bookId}&pageNumber=${pageNumber}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('pageContent').innerHTML = `<p>${data.Content}</p>`;
+                    document.getElementById('pageNumber').innerText = pageNumber;
+                    document.getElementById('prevPage').disabled = pageNumber <= 1;
+                    document.getElementById('nextPage').disabled = pageNumber >= totalPages;
+                })
+                .catch(error => console.error('Error loading page:', error));
+        }
+        window.addEventListener("DOMContentLoaded", () => {
+            loadPage(1)
+        })
+    </script>
+}

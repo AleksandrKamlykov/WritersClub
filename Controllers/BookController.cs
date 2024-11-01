@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using WritersClub.Interfaces;
 using WritersClub.Models;
 using WritersClub.Repository;
@@ -58,9 +60,44 @@ namespace WritersClub.Controllers
                 return View(book);
             }
 
+            // Ensure Pages are correctly associated with the Book
+            if (book.Pages != null)
+            {
+                for (int i = 0; i < book.Pages.Count; i++)
+                {
+                    book.Pages[i].BookId = book.Id;
+                }
+                book.PageCount = book.Pages.Count;
+            }
+
             // Если валидация прошла, сохраняем книгу
             await _books.CreateBook(book);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            var book = await _books.GetBookById(id);
+            if (book == null) return NotFound();
+
+            return View(book);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPage(int bookId, int pageNumber)
+        {
+            var book = await _books.GetBookById(bookId);
+            if (book == null) return NotFound();
+
+            var page = await _books.GetPage(bookId, pageNumber -1);
+            if (page == null) return NotFound();
+
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                WriteIndented = true
+            };
+
+            return new JsonResult(page, options);
         }
 
     }

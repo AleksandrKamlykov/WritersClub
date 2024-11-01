@@ -17,5 +17,20 @@ namespace WritersClub.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Page>(entity =>
+            {
+                entity.ToTable("Pages"); // Ensure the table name is correct
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Content).IsRequired();
+                entity.HasOne(e => e.Book)
+                      .WithMany(b => b.Pages)
+                      .HasForeignKey(e => e.BookId);
+            });
+
+        }
+
     }
 }

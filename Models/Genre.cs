@@ -1,14 +1,17 @@
-using System.ComponentModel.DataAnnotations;
+п»їusing System.ComponentModel.DataAnnotations;
 
 namespace WritersClub.Models;
 
 public class Genre
 {
     public int Id { get; set; }
-    [Required(ErrorMessage = "Название жанра обязательно")]
-    [StringLength(50, ErrorMessage = "Название должно быть не длиннее 50 символов")]
+
+    [Required(ErrorMessage = "РќР°Р·РІР°РЅРёРµ Р¶Р°РЅСЂР° РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ")]
+    [StringLength(maximumLength: 50, ErrorMessage = "РќР°Р·РІР°РЅРёРµ Р¶Р°РЅСЂР° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РЅРµ РґР»РёРЅРЅРµРµ 50 СЃРёРјРІРѕР»РѕРІ")]
     public string Name { get; set; }
-    [Required(ErrorMessage = "Краткое описание жанра обязательно")]
+
+    [Required(ErrorMessage = "РћРїРёСЃР°РЅРёРµ Р¶Р°РЅСЂР° РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ")]
     public string Description { get; set; }
+
     public List<Book>? Books { get; set; }
 }

@@ -11,5 +11,6 @@ public interface IBook
     public Task<Book> CreateBook(Book book);
     public Task<Book> DeleteBook(int id);
     public Task<Book> AddRating(int bookId, int rating);
+    public Task<Page> GetPage(int bookId, int rating);
     //public Task<List<Book>> SearchBooks(SearchBookViewModel searchBook);
 }
