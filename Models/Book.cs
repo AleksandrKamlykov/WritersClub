@@ -28,4 +28,5 @@ public class Book
     public DateTime ReleaseDate { get; set; }
 
     public List<Rating> Ratings { get; set; } = new();
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }

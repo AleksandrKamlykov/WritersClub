@@ -4,17 +4,19 @@
     ViewData["Title"] = "Все книги";
 }
 
-@* <a asp-action="CreateBook" asp-controller="Book" class="btn btn-success">Опубликовать произведение</a> *@
-<a asp-action="SelectUser" asp-controller="Account" class="btn btn-success">Опубликовать произведение</a>
+<a asp-action="CreateBook" asp-controller="Book" class="btn btn-success">Опубликовать произведение</a>
+@* <a asp-action="SelectUser" asp-controller="Account" class="btn btn-success">Опубликовать произведение</a> *@
 
 
 <h3 class="p-2 bg-primary text-white text-center">Опубликованные произведения</h3>
 <div class="container">
     <div class="row">
+        <div class="col fw-bold">Id</div>
         <div class="col fw-bold">Название</div>
         <div class="col fw-bold">Автор</div>
         <div class="col fw-bold">Жанр</div>
         <div class="col fw-bold">Дата публикации</div>
+        <div class="col fw-bold">Действие</div>
     </div>
    @if (Model.Count() == 0)
     {
@@ -27,11 +29,18 @@
     @foreach (var book in Model)
     {
         <div class="row">
+            <div class="col">@book.Id</div>
             <div class="col">@book.Name</div>
             <div class="col">@book.User?.Name</div>
             <div class="col">@book.Genre?.Name</div>
             <div class="col">@book.ReleaseDate.ToString("dd-MM-yyyy")</div>
+            <div class="col">
+                    <a asp-action="CreateComment" asp-controller="Comment" asp-route-bookId="@book.Id" class="btn btn-success">Оставить отзыв</a>
+                    <a asp-action="Details" asp-controller="Book" asp-route-bookId="@book.Id" class="btn btn-success">Просмотреть отзывы</a>
+
+            </div>
         </div>
+            <br />
     }
 
     } 

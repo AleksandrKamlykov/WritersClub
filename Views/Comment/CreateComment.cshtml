@@ -1,0 +1,22 @@
+﻿@model Comment
+
+<h3>Оставить отзыв</h3>
+<div class="comments-container2">
+    <form asp-action="CreateComment" method="post">
+        
+        <div class="form-group">
+            <label class="control-label">Ваш отзыв</label>
+            <textarea asp-for="Text" class="form-control"></textarea>
+        </div>
+
+        
+        <input type="hidden" asp-for="BookId" />
+        @Model.BookId
+        
+        <input type="hidden" asp-for="UserId" />
+        @Model.UserId
+        <div class="form-group mt-3">
+            <input type="submit" value="Отправить" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
