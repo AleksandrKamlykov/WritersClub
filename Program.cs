@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationContext>(opts => {
 builder.Services.AddScoped<IUser, UserRepository>();
 builder.Services.AddScoped<IBook, BookRepository>();
 builder.Services.AddScoped<IGenre, GenreRepository>();
+builder.Services.AddScoped<IComment, CommentRepository>();
 var app = builder.Build();
 
 

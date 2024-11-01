@@ -34,7 +34,7 @@ namespace WritersClub.Controllers
             return View(books);
         }
         [HttpGet]
-        public async Task<IActionResult> CreateBook(int userId)
+        public async Task<IActionResult> CreateBook(int userId=2)
         {
             var user = await _users.GetUserById(userId);
             if (user == null) return NotFound();
@@ -57,11 +57,20 @@ namespace WritersClub.Controllers
                 ViewBag.Genres = await _genres.GetAllGenres();
                 return View(book);
             }
-
-            // Если валидация прошла, сохраняем книгу
             await _books.CreateBook(book);
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet("Book/Details/{bookId}")]
+        public async Task<IActionResult> Details(int bookId)
+        {
+            var book = await _books.GetBookById(bookId);
 
+            if (book == null)
+            {
+                return NotFound("Книга не найдена.");
+            }
+
+            return View(book);
+        }
     }
 }
