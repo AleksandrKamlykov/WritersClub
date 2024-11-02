@@ -6,7 +6,7 @@
 
     var userId = @ViewBag.userId;
 }
-@if(userId != null)
+@if(userId != 0)
 {
     <a asp-action="SelectUser" asp-controller="Account" class="btn btn-success">Опубликовать произведение</a>
 }

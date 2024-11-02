@@ -4,6 +4,7 @@ using System.Text.Json;
 using WritersClub.Interfaces;
 using WritersClub.Models;
 using WritersClub.Repository;
+using WritersClub.Auth;
 
 namespace WritersClub.Controllers
 {
@@ -12,12 +13,14 @@ namespace WritersClub.Controllers
         private readonly IBook _books;
         private readonly IUser _users;
         private readonly IGenre _genres;
+        private readonly TokenService _tokenService;
 
-        public BookController(IBook books, IUser users, IGenre genres)
+        public BookController(IBook books, IUser users, IGenre genres, TokenService tokenService)
         {
             _books = books;
             _users = users;
             _genres = genres;
+            _tokenService = tokenService;
         }
 
         public async Task<IActionResult> SelectUser(string searchQuery = "")
@@ -33,6 +36,9 @@ namespace WritersClub.Controllers
         {
             var books = await _books.GetAllBooks();
             ViewBag.Genres = await _genres.GetAllGenres();
+
+            var user = _tokenService.GetUserFromToken(HttpContext.Request.Cookies["AuthToken"]);
+            ViewBag.userId = user?.Id ?? 0;
             return View(books);
         }
         [HttpGet]
@@ -74,15 +80,15 @@ namespace WritersClub.Controllers
             await _books.CreateBook(book);
             return RedirectToAction(nameof(Index));
         }
-        [HttpGet("Book/Details/{bookId}")]
-        public async Task<IActionResult> Details(int bookId)
-        {
-            var book = await _books.GetBookById(bookId);
-
+  
         public async Task<IActionResult> Detail(int id)
         {
             var book = await _books.GetBookById(id);
             if (book == null) return NotFound();
+
+            var user = _tokenService.GetUserFromToken(HttpContext.Request.Cookies["AuthToken"]);
+            ViewBag.userId = user?.Id ?? 0;
+            ViewBag.AverageRating = await _books.CalculateAverageRating(id);
 
             return View(book);
         }
@@ -102,6 +108,23 @@ namespace WritersClub.Controllers
             };
 
             return new JsonResult(page, options);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddRating(int bookId, int value)
+        {
+            if (value < 1 || value > 100)
+            {
+                return BadRequest("Значение рейтинга должно быть от 1 до 100.");
+            }
+
+            var book = await _books.GetBookById(bookId);
+            if (book == null)
+            {
+                return NotFound("Книга не найдена.");
+            }
+            await _books.AddRating(bookId, value);
+
+            return RedirectToAction(nameof(Detail), new { id = bookId });
         }
 
     }

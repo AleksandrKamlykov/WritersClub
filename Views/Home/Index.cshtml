@@ -2,7 +2,54 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+<!-- Hero Section -->
+<section class="hero text-center text-light">
+    <div class="container">
+        <h1 class="display-4">Добро пожаловать в сообщество писателей!</h1>
+        <p class="lead">Публикуйте свои произведения, читайте других авторов, ставьте оценки и оставляйте комментарии.</p>
+        <a asp-controller="Auth" asp-action="Login" class="btn btn-primary btn-lg mt-4">Присоединиться</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Чтение произведений</h5>
+                        <p class="card-text">Открывайте для себя новые произведения талантливых авторов со всего мира.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Публикация произведений</h5>
+                        <p class="card-text">Публикуйте свои собственные произведения и делитесь ими с другими.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Комментарии и оценки</h5>
+                        <p class="card-text">Оставляйте отзывы, ставьте оценки и поддерживайте любимых авторов.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="bg-primary text-light text-center py-5">
+    <div class="container">
+        <h2 class="mb-4">Присоединяйтесь к нашему сообществу уже сегодня!</h2>
+        <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-light btn-lg">Зарегистрироваться</a>
+    </div>
+</section>
+

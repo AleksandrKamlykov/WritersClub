@@ -1,36 +1,40 @@
-﻿@model User
-
+﻿@model UserDetailViewModel
 
 <div class="container mt-5">
-    <div class="card">
-        <div class="card-header">
-            <h2>User Details</h2>
-
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Детали пользователя</h2>
         </div>
 
-        <div class="d-flex justify-content-end gap-2">
-            <a asp-action="UpdateUser" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm">Редактировать</a>
+        @if (ViewBag.IsSameUser == true)
+        {
+            <div class="card-body d-flex justify-content-end gap-2">
+                <a asp-action="UpdateUser" asp-route-id="@Model.User.Id" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-pencil"></i> Редактировать
+                </a>
+                <form asp-action="DeleteUser" method="post" class="d-inline">
+                    <input type="hidden" name="Id" value="@Model.User.Id" />
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash"></i> Удалить
+                    </button>
+                </form>
+            </div>
+        }
 
-            <form asp-action="DeleteUser" method="post" class="d-inline">
-                <input type="hidden" name="Id" value="@Model.Id" />
-                <button type="submit" class="btn btn-outline-danger btn-sm">Удалить</button>
-            </form>
-        </div>
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-sm-3">
                     <strong>ID:</strong>
                 </div>
                 <div class="col-sm-9">
-                    @Model.Id
+                    @Model.User.Id
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-3">
-                    <strong>Name:</strong>
+                    <strong>Имя:</strong>
                 </div>
                 <div class="col-sm-9">
-                    @Model.Name
+                    @Model.User.Name
                 </div>
             </div>
             <div class="row mb-3">
@@ -38,28 +42,64 @@
                     <strong>Email:</strong>
                 </div>
                 <div class="col-sm-9">
-                    @Model.Email
+                    @Model.User.Email
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-3">
-                    <strong>Login:</strong>
+                    <strong>Логин:</strong>
                 </div>
                 <div class="col-sm-9">
-                    @Model.Login
+                    @Model.User.Login
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-3">
-                    <strong>State:</strong>
+                    <strong>Статус:</strong>
                 </div>
                 <div class="col-sm-9">
-                    @Model.State
+                    @Model.User.State
                 </div>
             </div>
         </div>
+
         <div class="card-footer text-right">
-            <a href="@Url.Action("Index", "Account")" class="btn btn-primary">Back to List</a>
+            <a href="@Url.Action("Index", "Account")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Назад к списку
+            </a>
         </div>
+</div>
+
+<!-- Books Section -->
+<h3 class="mt-5">Книги</h3>
+<div class="container mt-3">
+    <div class="row fw-bold border-bottom pb-2">
+        <div class="col">Название</div>
+        <div class="col">Жанр</div>
+        <div class="col">Дата публикации</div>
+        <div class="col text-center">Действие</div>
     </div>
+
+    @if (Model.Books.Count() == 0)
+    {
+        <div class="row">
+            <div class="col text-center p-3">Нет опубликованных произведений</div>
+        </div>
+    }
+    else
+    {
+        @foreach (var book in Model.Books)
+        {
+            <div class="row align-items-center py-2 border-bottom">
+                <div class="col">@book.Name</div>
+                <div class="col">@book.Genre?.Name</div>
+                <div class="col">@book.ReleaseDate.ToString("dd-MM-yyyy")</div>
+                <div class="col text-center">
+                    <a asp-action="Detail" asp-controller="Book" asp-route-id="@book.Id" class="btn btn-sm btn-primary">
+                        <i class="bi bi-eye"></i> Подробнее
+                    </a>
+                </div>
+            </div>
+        }
+    }
 </div>

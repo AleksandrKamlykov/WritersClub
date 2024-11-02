@@ -19,17 +19,17 @@ public class AuthController : Controller
     }
 
     [HttpGet]
-    public IActionResult Register()
+    public IActionResult Register(User model)
     {
-        return View();
+        return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(User model)
+    public async Task<IActionResult> RegisterPost(User model)
     {
         if (!ModelState.IsValid)
         {
-            return View("Index", model);
+            return View("Register", model);
         }
 
         var user = new User
@@ -68,7 +68,6 @@ public class AuthController : Controller
         }
 
         var token = _tokenService.GenerateToken(user);
-
 
         // Set the token in a secure cookie
         Response.Cookies.Append("AuthToken", token, new CookieOptions

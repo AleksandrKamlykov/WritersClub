@@ -17,6 +17,7 @@ namespace WritersClub.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

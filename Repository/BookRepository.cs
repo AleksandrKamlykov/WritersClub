@@ -71,5 +71,21 @@ namespace WritersClub.Repository
             var page = _context.Pages.FirstOrDefault(p => p.PageNumber == pageNum && p.BookId == bookId);
             return page;
         }
+        public async Task<IEnumerable<Book>> GetBooksByUserId(int userId)
+        {
+            return await _context.Books
+                .Include(b => b.User)
+                .Include(b => b.Genre)
+                .Where(b => b.UserId == userId)
+                .ToListAsync();
+        }
+        public async Task<double> CalculateAverageRating(int bookId)
+        {
+            var ratings = await _context.Ratings
+                .Where(r => r.BookId == bookId)
+                .ToListAsync();
+
+            return ratings.Any() ? ratings.Average(r => r.Value) : 0;
+        }
     }
 }

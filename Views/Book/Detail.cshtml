@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Book Details";
-    var userId = @ViewBag.userId;
+    var userId = ViewBag.userId;
 }
 <div>
     <a asp-action="Index">Back to List</a>
@@ -18,6 +18,22 @@
     </div>
 
     <div style="flex: 2;">
+        <div>
+            @if (userId != 0)
+            {
+                <form asp-action="AddRating" asp-controller="Book">
+                    <input type="hidden" name="bookId" value="@Model.Id" />
+                    <input type="number" name="value"  />
+              
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </form>
+            }
+            else
+            {
+                <p>Для добавления комментария необходимо авторизоваться</p>
+            }
+            <span>@(ViewBag.AverageRating ?? 0)</span>
+        </div>
         <h2>Page <span id="pageNumber">1</span> of @Model.PageCount</h2>
         <div id="pageContent">
             <p>@Model.Pages.FirstOrDefault()?.Content</p>
@@ -32,7 +48,7 @@
 <h3>Комментарии</h3>
 
 <h4>Добавить комментарий</h4>
-@if(userId != null)
+@if(userId != 0)
 {
     <form asp-action="CreateComment" asp-controller="Comment">
         <input type="hidden" name="bookId" value="@Model.Id" />
@@ -46,7 +62,7 @@
 else
 {
     <p>Для добавления комментария необходимо авторизоваться</p>
-})
+}
 
 <div class="comments-container">
     <ul class="list-group">

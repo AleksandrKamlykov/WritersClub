@@ -12,11 +12,13 @@ namespace WritersClub.Controllers
     {
         private readonly IUser _users;
         private readonly TokenService _tokenService;
+        private readonly IBook _books;
 
-        public AccountController(IUser users, TokenService tokenService)
+        public AccountController(IUser users, TokenService tokenService, IBook book)
         {
             _users = users;
             _tokenService = tokenService;
+            _books = book;
         }
         public async Task<IActionResult> Index()
         {
@@ -110,18 +112,43 @@ namespace WritersClub.Controllers
         {
             return RedirectToAction("CreateBook", "Book", new { userId = userId });
         }
-        public async Task<IActionResult> Detail()
+        public async Task<IActionResult> Detail(int? id)
         {
 
-            var token = HttpContext.Request.Cookies["AuthToken"];
-            AuthUserViewModel userAuth = _tokenService.GetUserFromToken(token);
+            int userId = id ?? 0;
 
-            var user = await _users.GetUserById(userAuth.Id);
+
+            var userAuth = _tokenService.GetUserFromToken(HttpContext.Request.Cookies["AuthToken"]);
+
+
+            if (userId == 0)
+            {
+                if (userAuth == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+                userId = userAuth.Id;
+                ViewBag.IsSameUser = true;
+            }
+            if(userId == userAuth.Id)
+            {
+                ViewBag.IsSameUser = true;
+            }
+
+            var user = await _users.GetUserById(userId);
             if (user == null)
             {
                 return RedirectToAction("Login", "Auth");
             }
-            return View(user);
+            var books = await _books.GetBooksByUserId(userId);
+
+            var viewModel = new UserDetailViewModel
+            {
+                User = user,
+                Books = books
+            };
+
+            return View(viewModel);
         }
 
     }
