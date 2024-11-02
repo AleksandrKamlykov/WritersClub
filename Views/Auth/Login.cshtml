@@ -1,0 +1,32 @@
+﻿@model WritersClub.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Auth";
+}
+
+
+
+<h2>Login</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="@Model.Username" class="control-label"></label>
+                <input asp-for="@Model.Username" class="form-control" />
+                <span asp-validation-for="@Model.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Password" class="control-label"></label>
+                <input asp-for="@Model.Password" class="form-control" type="password" />
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+    <a asp-action="Register" asp-controller="Auth" class="btn btn-success">Register</a>
+</div>

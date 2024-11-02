@@ -72,5 +72,9 @@ namespace WritersClub.Repository
                 .Where(u => EF.Functions.Like(u.Name, $"%{searchQuery}%"))
                 .ToListAsync();
         }
+        public User GetByLogin(string login)
+        {
+            return _context.Users.SingleOrDefault(u => u.Login == login);
+        }
     }
 }

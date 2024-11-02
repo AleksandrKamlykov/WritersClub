@@ -15,12 +15,17 @@
     <tbody>
         @foreach (var user in Model)
         {
+            if(user.State==0)
+            {
             <tr>
                 <td>@user.Name</td>
+                <td>@user.Login</td>
                 <td>
-                    <a asp-action="CreateBook" asp-controller="Book" asp-route-userId="@user.Id" class="btn btn-link">Выбрать</a>
+                    <a asp-action="CreateBook" asp-controller="Book" asp-route-userId="@user.Id" class="btn btn-link">Добавить книгу</a>
+                    <a asp-action="CreateComment" asp-controller="Comment" asp-route-userId="@user.Id" class="btn btn-link">Добавить отзыв</a>
                 </td>
             </tr>
+            }
         }
     </tbody>
 </table>

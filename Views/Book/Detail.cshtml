@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Book Details";
+    var userId = @ViewBag.userId;
 }
 <div>
     <a asp-action="Index">Back to List</a>
@@ -28,6 +29,43 @@
         </div>
     </div>
 </div>
+<h3>Комментарии</h3>
+
+<h4>Добавить комментарий</h4>
+@if(userId != null)
+{
+    <form asp-action="CreateComment" asp-controller="Comment">
+        <input type="hidden" name="bookId" value="@Model.Id" />
+        <input type="hidden" name="userId" value="@userId" />
+        <div class="form-group">
+            <textarea class="form-control" name="text"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+}
+else
+{
+    <p>Для добавления комментария необходимо авторизоваться</p>
+})
+
+<div class="comments-container">
+    <ul class="list-group">
+        @if (Model.Comments != null && Model.Comments.Any())
+        {
+            @foreach (var comment in Model.Comments)
+            {
+                <li class="list-group-item">
+                    @comment.Text <br />
+                    <p><strong>@comment.User?.Login</strong></p>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item">Отзывы отсутствуют</li>
+        }
+    </ul>
+</div>
 
 
 
@@ -37,14 +75,14 @@
         const totalPages = @Model.PageCount;
         const bookId = @Model.Id;
 
-        document.getElementById('prevPage').addEventListener('click', function() {
+        document.getElementById('prevPage').addEventListener('click', function () {
             if (currentPage > 1) {
                 currentPage--;
                 loadPage(currentPage);
             }
         });
 
-        document.getElementById('nextPage').addEventListener('click', function() {
+        document.getElementById('nextPage').addEventListener('click', function () {
             if (currentPage < totalPages) {
                 currentPage++;
                 loadPage(currentPage);

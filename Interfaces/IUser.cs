@@ -12,4 +12,5 @@ public interface IUser
     public Task<IEnumerable<User>> GetAllUsers();
     Task<bool> IsUserNameAvailable(string login);
     Task<IEnumerable<User>> SearchUsersByName(string searchQuery);
+    User GetByLogin(string login);
 }

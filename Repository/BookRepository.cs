@@ -27,13 +27,15 @@ namespace WritersClub.Repository
                 .Include(b => b.Genre)
                 .ToListAsync();
         }
-        public async Task<Book>GetBookById(int id)
+        public async Task<Book> GetBookById(int BookId)
         {
             return await _context.Books
                 .Include(b => b.User)
                 .Include(b => b.Genre)
                 .Include(b => b.Ratings)
-                .FirstOrDefaultAsync(b => b.Id == id);
+                .Include(b => b.Comments)
+                .ThenInclude(c => c.User)
+                .FirstOrDefaultAsync(b => b.Id == BookId);
         }
         public async Task<Book> DeleteBook(int id)
         {

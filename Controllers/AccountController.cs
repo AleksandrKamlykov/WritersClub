@@ -1,18 +1,22 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WritersClub.Auth;
 using WritersClub.Models;
 using WritersClub.Repository;
+using WritersClub.ViewModel;
 
 namespace WritersClub.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IUser _users;
+        private readonly TokenService _tokenService;
 
-        public AccountController(IUser users)
+        public AccountController(IUser users, TokenService tokenService)
         {
             _users = users;
+            _tokenService = tokenService;
         }
         public async Task<IActionResult> Index()
         {
@@ -105,6 +109,19 @@ namespace WritersClub.Controllers
         public IActionResult SelectUser(int userId)
         {
             return RedirectToAction("CreateBook", "Book", new { userId = userId });
+        }
+        public async Task<IActionResult> Detail()
+        {
+
+            var token = HttpContext.Request.Cookies["AuthToken"];
+            AuthUserViewModel userAuth = _tokenService.GetUserFromToken(token);
+
+            var user = await _users.GetUserById(userAuth.Id);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            return View(user);
         }
 
     }

@@ -56,6 +56,33 @@ namespace WritersClub.Migrations
                     b.ToTable("Books");
                 });
 
+            modelBuilder.Entity("WritersClub.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("WritersClub.Models.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -178,6 +205,25 @@ namespace WritersClub.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WritersClub.Models.Comment", b =>
+                {
+                    b.HasOne("WritersClub.Models.Book", "Book")
+                        .WithMany("Comments")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WritersClub.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WritersClub.Models.Page", b =>
                 {
                     b.HasOne("WritersClub.Models.Book", "Book")
@@ -202,6 +248,8 @@ namespace WritersClub.Migrations
 
             modelBuilder.Entity("WritersClub.Models.Book", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Pages");
 
                     b.Navigation("Ratings");

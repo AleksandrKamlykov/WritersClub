@@ -12,8 +12,8 @@ using WritersClub.Data;
 namespace WritersClub.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20241101174501_add onModelCreating")]
-    partial class addonModelCreating
+    [Migration("20241101185232_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,9 @@ namespace WritersClub.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("PageCount")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
@@ -54,6 +57,33 @@ namespace WritersClub.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("WritersClub.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("WritersClub.Models.Genre", b =>
@@ -100,7 +130,7 @@ namespace WritersClub.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Pages");
+                    b.ToTable("Pages", (string)null);
                 });
 
             modelBuilder.Entity("WritersClub.Models.Rating", b =>
@@ -178,6 +208,25 @@ namespace WritersClub.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WritersClub.Models.Comment", b =>
+                {
+                    b.HasOne("WritersClub.Models.Book", "Book")
+                        .WithMany("Comments")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WritersClub.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WritersClub.Models.Page", b =>
                 {
                     b.HasOne("WritersClub.Models.Book", "Book")
@@ -202,6 +251,8 @@ namespace WritersClub.Migrations
 
             modelBuilder.Entity("WritersClub.Models.Book", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Pages");
 
                     b.Navigation("Ratings");
