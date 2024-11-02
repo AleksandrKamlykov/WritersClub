@@ -5,43 +5,43 @@
     var userId = ViewBag.userId;
 }
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад к списку книг</a>
 </div>
 <h1>@Model.Name</h1>
 
 <div style="display: flex;">
     <div style="flex: 1; padding-right: 20px;">
-        <h2>Details</h2>
-        <p><strong>Author:</strong> @Model.User.Name</p>
-        <p><strong>Genre:</strong> @Model.Genre.Name</p>
-        <p><strong>Release Date:</strong> @Model.ReleaseDate.ToString("d")</p>
+        <h2>Детали</h2>
+        <p><strong>Автор:</strong> @Model.User.Name</p>
+        <p><strong>Жанр:</strong> @Model.Genre.Name</p>
+        <p><strong>Дата релиза:</strong> @Model.ReleaseDate.ToString("d")</p>
     </div>
 
     <div style="flex: 2;">
-        <div>
+        <div class="d-flex align-items-center gap-4">
             @if (userId != 0)
             {
                 <form asp-action="AddRating" asp-controller="Book">
                     <input type="hidden" name="bookId" value="@Model.Id" />
-                    <input type="number" name="value"  />
+                    <input placeholder="Ваша оценка" type="number" name="value"  />
               
-                    <button type="submit" class="btn btn-primary">Добавить</button>
+                    <button type="submit" class="btn btn-primary">Добавить оценку</button>
                 </form>
             }
             else
             {
                 <p>Для добавления комментария необходимо авторизоваться</p>
             }
-            <span>@(ViewBag.AverageRating ?? 0)</span>
+            <span>Рейтинг: @(ViewBag.AverageRating ?? 0)/100</span>
         </div>
-        <h2>Page <span id="pageNumber">1</span> of @Model.PageCount</h2>
+        <h2>Страница <span id="pageNumber">1</span> из @Model.PageCount</h2>
         <div id="pageContent">
             <p>@Model.Pages.FirstOrDefault()?.Content</p>
         </div>
 
         <div>
-            <button id="prevPage" class="btn btn-primary" disabled>Previous Page</button>
-            <button id="nextPage" class="btn btn-primary">Next Page</button>
+            <button id="prevPage" class="btn btn-primary" disabled>Предыдущая страница</button>
+            <button id="nextPage" class="btn btn-primary">Следующая страница</button>
         </div>
     </div>
 </div>
@@ -71,14 +71,15 @@ else
             @foreach (var comment in Model.Comments)
             {
                 <li class="list-group-item">
-                    @comment.Text <br />
                     <p><strong>@comment.User?.Login</strong></p>
+
+                    @comment.Text <br />
                 </li>
             }
         }
         else
         {
-            <li class="list-group-item">Отзывы отсутствуют</li>
+            <li class="list-group-item">Комментарии отсутствуют</li>
         }
     </ul>
 </div>

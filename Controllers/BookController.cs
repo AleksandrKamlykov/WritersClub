@@ -5,6 +5,7 @@ using WritersClub.Interfaces;
 using WritersClub.Models;
 using WritersClub.Repository;
 using WritersClub.Auth;
+using WritersClub.ViewModel;
 
 namespace WritersClub.Controllers
 {
@@ -31,20 +32,34 @@ namespace WritersClub.Controllers
 
             return View(users);
         }
-
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(SearchBookViewModel searchModel)
         {
-            var books = await _books.GetAllBooks();
-            ViewBag.Genres = await _genres.GetAllGenres();
+            var books = await _books.SearchBooks(searchModel);
+            var users = await _users.GetAllUsers();
+            var genres = await _genres.GetAllGenres();
 
             var user = _tokenService.GetUserFromToken(HttpContext.Request.Cookies["AuthToken"]);
+
+
+            BooksViewModal booksViewModal = new BooksViewModal
+            {
+                Books = books,
+                Users = users,
+                Genres = genres,
+                SearchBook = searchModel
+            };
+
             ViewBag.userId = user?.Id ?? 0;
-            return View(books);
+            return View(booksViewModal);
         }
         [HttpGet]
-        public async Task<IActionResult> CreateBook(int userId=2)
+        public async Task<IActionResult> CreateBook()
         {
-            var user = await _users.GetUserById(userId);
+
+            var userA = _tokenService.GetUserFromToken(HttpContext.Request.Cookies["AuthToken"]);
+
+            var user = await _users.GetUserById(userA.Id);
             if (user == null) return NotFound();
 
             var book = new Book { UserId = user.Id, User = user };

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WritersClub.Auth;
 using WritersClub.Models;
@@ -69,7 +71,6 @@ public class AuthController : Controller
 
         var token = _tokenService.GenerateToken(user);
 
-        // Set the token in a secure cookie
         Response.Cookies.Append("AuthToken", token, new CookieOptions
         {
             HttpOnly = true,
@@ -78,6 +79,11 @@ public class AuthController : Controller
             Expires = DateTime.UtcNow.AddHours(1)
         });
 
+        return RedirectToAction("Index", "Home");
+    }
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
 }

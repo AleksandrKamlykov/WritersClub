@@ -1,33 +1,42 @@
-﻿@model IEnumerable<Book>
+﻿@model BooksViewModal
 
 @{
     ViewData["Title"] = "Все книги";
 
-
     var userId = @ViewBag.userId;
-}
-@if(userId != 0)
-{
-    <a asp-action="SelectUser" asp-controller="Account" class="btn btn-success">Опубликовать произведение</a>
-}
-else
-{
-    <a asp-action="Login" asp-controller="Auth" class="btn btn-success">Для публикации произведения необходимо авторизоваться</a>
-}
 
+    var genres = new SelectList(Model.Genres, "Id", "Name");
+    var users = new SelectList(Model.Users, "Id", "Name");
+}
 
 <h3 class="p-2 bg-primary text-white text-center">Опубликованные произведения</h3>
-<div class="container">
-    <div class="row">
-        <div class="col fw-bold">Id</div>
-        <div class="col fw-bold">Название</div>
-        <div class="col fw-bold">Автор</div>
-        <div class="col fw-bold">Жанр</div>
-        <div class="col fw-bold">Дата публикации</div>
 
-        <div class="col fw-bold">Действие</div>
-    </div>
-   @if (Model.Count() == 0)
+<div class="container mt-5">
+    <form asp-action="Index" method="get" class="mt-4">
+        <div class="d-flex gap-2">
+            <div class="form-group col-md-4">
+                <label for="GenreId">Genre</label>
+                <select name="GenreId" class="form-control" asp-for="@Model.SearchBook.GenreId" asp-items="genres">
+                    <option value="">Select Genre</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="Name">Name</label>
+                <input type="text" name="Name" asp-for="@Model.SearchBook.Name" class="form-control" placeholder="Enter book name">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="UserId">Author</label>
+                <select name="AuthorId" asp-for="@Model.SearchBook.AuthorId" class="form-control" asp-items="users">
+                    <option value="">Select Author</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Поиск</button>
+    </form>
+</div>
+
+<div class="container mt-4">
+    @if (Model.Books.Count() == 0)
     {
         <div class="row">
             <div class="col text-center p-2">Нет опубликованных произведений</div>
@@ -35,22 +44,23 @@ else
     }
     else
     {
-    @foreach (var book in Model)
-    {
-        <div class="row">
-            <div class="col">@book.Id</div>
-            <div class="col">@book.Name</div>
-            <div class="col">@book.User?.Name</div>
-            <div class="col">@book.Genre?.Name</div>
-            <div class="col">@book.ReleaseDate.ToString("dd-MM-yyyy")</div>
-            <div class="col">
-                <a asp-action="Detail" asp-controller="Book" asp-route-id="@book.Id" class="btn btn-primary">Подробнее</a>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            @foreach (var book in Model.Books)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Name</h5>
+                            <p class="card-text"><strong>Автор:</strong> @book.User?.Name</p>
+                            <p class="card-text"><strong>Жанр:</strong> @book.Genre?.Name</p>
+                            <p class="card-text"><strong>Дата публикации:</strong> @book.ReleaseDate.ToString("dd-MM-yyyy")</p>
+                        </div>
+                        <div class="card-footer">
+                            <a asp-action="Detail" asp-controller="Book" asp-route-id="@book.Id" class="btn btn-primary">Подробнее</a>
+                        </div>
+                    </div>
                 </div>
-
-         </div>
-
-         
+            }
+        </div>
     }
-
-    } 
 </div>

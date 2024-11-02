@@ -51,7 +51,7 @@ namespace WritersClub.Auth
             var key = Encoding.UTF8.GetBytes(_secret);
             try
             {
-                Console.WriteLine($"Token: {token}"); // Логування токена
+                Console.WriteLine($"Token: {token}");
 
                 var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
@@ -63,7 +63,6 @@ namespace WritersClub.Auth
                 }, out SecurityToken validatedToken);
 
                 var userIdClaim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-               // var loginClaim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
 
                 if (userIdClaim == null )
                 {
@@ -80,7 +79,6 @@ namespace WritersClub.Auth
             }
             catch (Exception ex)
             {
-                // Логування помилки
                 Console.WriteLine($"Token validation failed: {ex.Message}");
                 return null;
             }

@@ -14,6 +14,6 @@ public interface IBook
     public Task<Page> GetPage(int bookId, int rating);
     public Task<double> CalculateAverageRating(int bookId);
     public Task<IEnumerable<Book>> GetBooksByUserId(int userId);
+    public Task<List<Book>> SearchBooks(SearchBookViewModel searchModel);
 
-    //public Task<List<Book>> SearchBooks(SearchBookViewModel searchBook);
 }

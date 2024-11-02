@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WritersClub.Data;
 using WritersClub.Models;
+using WritersClub.ViewModel;
 
 namespace WritersClub.Repository
 {
@@ -86,6 +87,31 @@ namespace WritersClub.Repository
                 .ToListAsync();
 
             return ratings.Any() ? ratings.Average(r => r.Value) : 0;
+        }
+        public async Task<List<Book>> SearchBooks(SearchBookViewModel searchModel)
+        {
+            var query = _context.Books
+                .Include(b => b.Genre)
+                .Include(b => b.User)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchModel.Name))
+            {
+                query = query.Where(b => b.Name.Contains(searchModel.Name));
+
+            }
+
+            if (searchModel.GenreId.HasValue)
+            {
+                query = query.Where(b => b.GenreId == searchModel.GenreId.Value);
+            }
+
+            if (searchModel.AuthorId.HasValue)
+            {
+                query = query.Where(b => b.User.Id == searchModel.AuthorId.Value);
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

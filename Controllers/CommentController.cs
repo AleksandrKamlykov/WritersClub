@@ -17,16 +17,6 @@ namespace WritersClub.Controllers
             _books = books;
         }
 
-        //public async Task<IActionResult> CreateComment(int bookId, int userId=2)
-        //{
-        //    var user = await _users.GetUserById(userId);
-           
-        //    if (user == null) return NotFound();
-
-        //    var comment = new Comment { UserId = user.Id, BookId = bookId };
-        //    ViewBag.UserName = user.Login;
-        //    return View(comment);
-        //}
         [HttpPost]
         public async Task<IActionResult> CreateComment(Comment comment, int userId)
         {
